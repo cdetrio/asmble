@@ -59,6 +59,7 @@ abstract class ScriptCommand<T> : Command<T>() {
             defaultMaxMemPages = args.defaultMaxMemPages
         )
         // Compile everything
+        // start compile time
         context = args.inFiles.foldIndexed(context) { index, ctx, inFile ->
             try {
                 when (inFile.substringAfterLast('.')) {
@@ -74,6 +75,7 @@ abstract class ScriptCommand<T> : Command<T>() {
                             val className = name?.javaIdent?.capitalize() ?:
                             "Temp" + UUID.randomUUID().toString().replace("-", "")
                             ctx.withCompiledModule(mod, className, name).let { ctx ->
+                                // print compile time
                                 if (name == null && index != args.inFiles.size - 1)
                                     logger.warn { "File '$inFile' not last and has no name so will be unused" }
                                 if (name == null || args.disableAutoRegister) ctx
